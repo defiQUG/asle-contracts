@@ -70,5 +70,11 @@ interface IComplianceFacet {
     function getVaultComplianceMode(
         uint256 vaultId
     ) external view returns (ComplianceMode);
+
+    function validateTransaction(
+        address from,
+        address to,
+        uint256 amount
+    ) external view returns (bool);
 }
 

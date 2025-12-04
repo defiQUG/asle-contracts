@@ -239,13 +239,20 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
     }
 
     /**
-     * @notice Preview assets needed to mint shares
+     * @notice Preview assets needed to mint shares (internal)
      */
-    function previewMint(uint256 vaultId, uint256 shares) external view returns (uint256) {
+    function _previewMint(uint256 vaultId, uint256 shares) internal view returns (uint256) {
         VaultConfig storage config = vaultStorage().vaultConfigs[vaultId];
         uint256 assetsNeeded = convertToAssets(vaultId, shares);
         // Add deposit fee
         return assetsNeeded + (assetsNeeded * config.depositFee / (MAX_BPS - config.depositFee));
+    }
+
+    /**
+     * @notice Preview assets needed to mint shares
+     */
+    function previewMint(uint256 vaultId, uint256 shares) external view returns (uint256) {
+        return _previewMint(vaultId, shares);
     }
 
     /**
@@ -262,7 +269,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
         require(vault.active, "VaultFacet: Vault not active");
         require(!vault.isMultiAsset, "VaultFacet: Use multi-asset mint for ERC-1155 vaults");
 
-        assets = previewMint(vaultId, shares);
+        assets = _previewMint(vaultId, shares);
         IERC20 assetToken = IERC20(vault.asset);
         assetToken.safeTransferFrom(msg.sender, address(this), assets);
 

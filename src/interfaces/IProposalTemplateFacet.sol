@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import {IGovernanceFacet} from "./IGovernanceFacet.sol";
+
 interface IProposalTemplateFacet {
     struct ProposalTemplate {
         uint256 id;

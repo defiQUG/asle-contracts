@@ -14,6 +14,7 @@ contract GovernanceFacet is IGovernanceFacet {
 
     struct GovernanceStorage {
         mapping(uint256 => Proposal) proposals;
+        mapping(uint256 => Action[]) proposalActions; // proposalId => actions array
         uint256 proposalCount;
         address governanceToken; // ERC-20 token for voting
         uint256 quorumThreshold; // Minimum votes required
@@ -124,9 +125,10 @@ contract GovernanceFacet is IGovernanceFacet {
         proposal.status = ProposalStatus.Executed;
 
         // Execute actions if multi-action proposal
-        if (proposal.actions.length > 0) {
-            for (uint256 i = 0; i < proposal.actions.length; i++) {
-                Action storage action = proposal.actions[i];
+        Action[] storage actions = gs.proposalActions[proposalId];
+        if (actions.length > 0) {
+            for (uint256 i = 0; i < actions.length; i++) {
+                Action storage action = actions[i];
                 require(!action.executed, "GovernanceFacet: Action already executed");
                 
                 (bool success, ) = action.target.call{value: action.value}(action.data);
@@ -177,7 +179,7 @@ contract GovernanceFacet is IGovernanceFacet {
 
         // Store actions
         for (uint256 i = 0; i < actions.length; i++) {
-            proposal.actions.push(actions[i]);
+            gs.proposalActions[proposalId].push(actions[i]);
         }
 
         if (votingPeriod == 0) {

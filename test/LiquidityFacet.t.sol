@@ -79,8 +79,7 @@ contract LiquidityFacetTest is Test {
             virtualBaseReserve,
             virtualQuoteReserve,
             k,
-            oraclePrice,
-            address(0) // No oracle for now
+            oraclePrice
         );
 
         assertEq(poolId, 0, "First pool should have ID 0");
@@ -105,8 +104,7 @@ contract LiquidityFacetTest is Test {
             5000 ether,
             10000 ether,
             5000,
-            2 ether,
-            address(0)
+            2 ether
         );
 
         uint256 price = ILiquidityFacet(address(diamond)).getPrice(poolId);
@@ -125,8 +123,7 @@ contract LiquidityFacetTest is Test {
             5000 ether,
             10000 ether,
             5000,
-            2 ether,
-            address(0)
+            2 ether
         );
 
         uint256 poolId2 = ILiquidityFacet(address(diamond)).createPool(
@@ -137,8 +134,7 @@ contract LiquidityFacetTest is Test {
             2500 ether,
             5000 ether,
             5000,
-            2 ether,
-            address(0)
+            2 ether
         );
 
         assertEq(poolId1, 0);

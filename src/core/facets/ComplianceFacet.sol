@@ -35,7 +35,7 @@ contract ComplianceFacet is IComplianceFacet {
     }
 
     modifier requireCompliance(address user, ComplianceMode requiredMode) {
-        require(canAccess(user, requiredMode), "ComplianceFacet: Compliance check failed");
+        require(this.canAccess(user, requiredMode), "ComplianceFacet: Compliance check failed");
         _;
     }
 
