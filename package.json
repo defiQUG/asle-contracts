@@ -1,0 +1,22 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "ASLE Smart Contracts using Foundry",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "test:verbose": "forge test -vvv",
+    "test:gas": "forge test --gas-report",
+    "coverage": "forge coverage",
+    "lint": "forge fmt --check",
+    "format": "forge fmt",
+    "snapshot": "forge snapshot",
+    "script:deploy": "forge script script/Deploy.s.sol:DeployScript --broadcast --verify",
+    "script:multichain": "forge script script/DeployMultichain.s.sol:DeployMultichainScript",
+    "anvil": "anvil",
+    "clean": "forge clean"
+  },
+  "keywords": ["solidity", "foundry", "ethereum", "defi"],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,39 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+broadcast = "broadcast"
+cache_path = "cache_forge"
+
+# See more config options https://github.com/foundry-rs/foundry/tree/master/config
+
+# Solidity version
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+
+# Extra output
+extra_output = ["abi", "evm.bytecode", "evm.deployedBytecode"]
+extra_output_files = ["abi", "evm.bytecode", "evm.deployedBytecode"]
+
+# Fuzz testing
+fuzz = { runs = 256 }
+
+# Remappings for dependencies
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "@chainlink/=lib/chainlink/",
+    "forge-std/=lib/forge-std/src/"
+]
+
+# Network configurations
+[rpc_endpoints]
+localhost = "http://127.0.0.1:8545"
+anvil = "http://127.0.0.1:8545"
+
+[etherscan]
+etherscan = { key = "${ETHERSCAN_API_KEY}" }
+
