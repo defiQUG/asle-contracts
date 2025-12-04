@@ -206,7 +206,7 @@ contract ComplianceFacet is IComplianceFacet {
     /**
      * @notice Automatic OFAC check on transaction (called by other facets)
      */
-    function performAutomaticOFACCheck(address user) external returns (bool) {
+    function performAutomaticOFACCheck(address user) external view returns (bool) {
         ComplianceStorage storage cs = complianceStorage();
         if (cs.automaticOFACCheck) {
             // In production, this would call an external service or oracle
@@ -252,7 +252,7 @@ contract ComplianceFacet is IComplianceFacet {
     /**
      * @notice Record transaction for compliance tracking
      */
-    function recordTransaction(address from, address to, uint256 amount) external {
+    function recordTransaction(address from, address, uint256 amount) external {
         ComplianceStorage storage cs = complianceStorage();
         
         // Reset daily volume if new day

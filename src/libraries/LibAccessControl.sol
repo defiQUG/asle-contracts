@@ -153,7 +153,7 @@ library LibAccessControl {
     /**
      * @notice Schedule an operation with timelock
      */
-    function scheduleOperation(bytes32 operationId, bytes32 operationHash) internal {
+    function scheduleOperation(bytes32 operationId, bytes32) internal {
         TimelockStorage storage ts = timelockStorage();
         require(ts.timelockEnabled, "LibAccessControl: timelock not enabled");
         require(ts.scheduledOperations[operationId] == 0, "LibAccessControl: operation already scheduled");

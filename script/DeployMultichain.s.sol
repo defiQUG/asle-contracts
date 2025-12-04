@@ -5,7 +5,7 @@ import {Script, console} from "forge-std/Script.sol";
 import {DeployScript} from "./Deploy.s.sol";
 
 contract DeployMultichainScript is Script {
-    function run() external {
+    function run() external pure {
         // This script would deploy to multiple chains
         // In production, you would:
         // 1. Get chain-specific RPC URLs

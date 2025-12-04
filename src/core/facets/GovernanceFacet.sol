@@ -272,7 +272,6 @@ contract GovernanceFacet is IGovernanceFacet {
 
     function delegate(address delegatee) external override {
         GovernanceStorage storage gs = governanceStorage();
-        address currentDelegate = gs.delegations[msg.sender];
         uint256 previousBalance = _getVotingPower(msg.sender);
         
         gs.delegations[msg.sender] = delegatee;
@@ -284,18 +283,17 @@ contract GovernanceFacet is IGovernanceFacet {
     function delegateBySig(
         address delegator,
         address delegatee,
-        uint256 nonce,
+        uint256,
         uint256 expiry,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
+        uint8,
+        bytes32,
+        bytes32
     ) external override {
         // EIP-712 signature verification would go here
         // For now, simplified implementation
         require(block.timestamp <= expiry, "GovernanceFacet: Signature expired");
         
         GovernanceStorage storage gs = governanceStorage();
-        address currentDelegate = gs.delegations[delegator];
         uint256 previousBalance = _getVotingPower(delegator);
         
         gs.delegations[delegator] = delegatee;
@@ -314,7 +312,7 @@ contract GovernanceFacet is IGovernanceFacet {
         return _getVotingPower(account);
     }
 
-    function getPriorVotes(address account, uint256 blockNumber) external view override returns (uint256) {
+    function getPriorVotes(address account, uint256) external view override returns (uint256) {
         // Simplified: return current votes (full implementation would use checkpoints)
         return _getVotingPower(account);
     }

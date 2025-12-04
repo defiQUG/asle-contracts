@@ -100,7 +100,7 @@ contract DeployScript is Script {
         });
     }
 
-    function _getSelectors(string memory facetName) internal pure returns (bytes4[] memory) {
+    function _getSelectors(string memory) internal pure returns (bytes4[] memory) {
         // This is a simplified version - in production, use FacetCutHelper or similar
         // For now, return empty array - selectors should be added manually or via helper
         bytes4[] memory selectors = new bytes4[](0);

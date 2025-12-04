@@ -25,11 +25,9 @@ library FacetCutHelper {
         return code;
     }
 
-    function _extractSelectors(bytes memory bytecode) internal pure returns (bytes4[] memory) {
+    function _extractSelectors(bytes memory) internal pure returns (bytes4[] memory) {
         // Simplified selector extraction - in production use proper parsing
         // This is a placeholder - actual implementation would parse bytecode
-        bytes4[] memory selectors = new bytes4[](100); // Max selectors
-        uint256 count = 0;
         
         // This is a simplified version - proper implementation would parse the bytecode
         // For now, return empty and require manual selector lists

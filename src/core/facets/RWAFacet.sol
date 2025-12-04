@@ -39,7 +39,7 @@ contract RWAFacet is IRWAFacet, IERC1404 {
         address assetContract,
         string calldata assetType,
         uint256 totalValue,
-        bytes calldata complianceData
+        bytes calldata
     ) external override returns (uint256 tokenId) {
         // Check compliance - RWA tokenization typically requires Regulated mode
         IComplianceFacet complianceFacet = IComplianceFacet(address(this));

@@ -14,11 +14,11 @@ contract DiamondTest is Test {
         diamondCutFacet = new DiamondCutFacet();
     }
 
-    function testDiamondDeployment() public {
+    function testDiamondDeployment() public view {
         assertTrue(address(diamond) != address(0));
     }
 
-    function testFacetManagement() public {
+    function testFacetManagement() public pure {
         // Test facet addition
         assertTrue(true);
     }

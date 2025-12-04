@@ -216,7 +216,7 @@ contract CCIPFacet is ICCIPFacet {
 
     function _sendCCIPMessage(
         uint256 targetChainId,
-        MessageType messageType,
+        MessageType,
         bytes memory payload
     ) internal returns (bytes32) {
         CCIPStorage storage cs = ccipStorage();
@@ -248,7 +248,7 @@ contract CCIPFacet is ICCIPFacet {
         }
     }
 
-    function _syncPoolState(LiquiditySyncPayload memory payload) external {
+    function _syncPoolState(LiquiditySyncPayload memory) external view {
         require(msg.sender == address(this), "CCIPFacet: Internal only");
         // In production, this would update pool virtual reserves based on cross-chain state
         // For now, we emit events and let the backend handle synchronization
@@ -261,10 +261,9 @@ contract CCIPFacet is ICCIPFacet {
         return true;
     }
 
-    function _handlePriceDeviation(PriceDeviationPayload memory payload, uint256 sourceChainId) internal returns (bool) {
+    function _handlePriceDeviation(PriceDeviationPayload memory payload, uint256) internal view returns (bool) {
         // Trigger security alerts if deviation is significant
         if (payload.deviation > 500) { // 5% deviation threshold
-            ISecurityFacet securityFacet = ISecurityFacet(address(this));
             // Could trigger circuit breaker or alert
         }
         return true;

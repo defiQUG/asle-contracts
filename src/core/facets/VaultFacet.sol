@@ -94,11 +94,11 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
      * @notice Create a new vault (ERC-4626 or ERC-1155)
      */
     function createVault(
-        address asset,
+        address assetToken,
         bool isMultiAsset
     ) external override returns (uint256 vaultId) {
         if (!isMultiAsset) {
-            require(asset != address(0), "VaultFacet: Asset required for ERC-4626");
+            require(assetToken != address(0), "VaultFacet: Asset required for ERC-4626");
         }
 
         VaultStorage storage vs = vaultStorage();
@@ -106,7 +106,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
         vs.vaultCount++;
 
         Vault storage vault = vs.vaults[vaultId];
-        vault.asset = asset;
+        vault.asset = assetToken;
         vault.isMultiAsset = isMultiAsset;
         vault.totalAssets = 0;
         vault.totalSupply = 0;
@@ -121,7 +121,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
         config.paused = false;
         config.allowListEnabled = false;
 
-        emit VaultCreated(vaultId, asset, isMultiAsset);
+        emit VaultCreated(vaultId, assetToken, isMultiAsset);
     }
 
     // ============ ERC-4626 Functions ============
@@ -174,7 +174,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
     /**
      * @notice Maximum assets that can be deposited
      */
-    function maxDeposit(uint256 vaultId, address) external pure returns (uint256) {
+    function maxDeposit(uint256, address) external pure returns (uint256) {
         return type(uint256).max; // No deposit limit
     }
 
@@ -234,7 +234,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
     /**
      * @notice Maximum shares that can be minted
      */
-    function maxMint(uint256 vaultId, address) external pure returns (uint256) {
+    function maxMint(uint256, address) external pure returns (uint256) {
         return type(uint256).max; // No mint limit
     }
 
@@ -315,15 +315,14 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
         address receiver,
         address owner
     ) external override whenVaultNotPaused(vaultId) nonReentrant returns (uint256 assets) {
+        VaultStorage storage vs = vaultStorage();
+        
         // Check authorization
         if (msg.sender != owner) {
-            VaultStorage storage vs = vaultStorage();
             uint256 allowed = vs.allowances[vaultId][owner][msg.sender];
             require(allowed >= shares, "VaultFacet: Insufficient allowance");
             vs.allowances[vaultId][owner][msg.sender] -= shares;
         }
-
-        VaultStorage storage vs = vaultStorage();
         Vault storage vault = vs.vaults[vaultId];
         require(vault.active, "VaultFacet: Vault not active");
         require(!vault.isMultiAsset, "VaultFacet: Use multi-asset withdraw for ERC-1155 vaults");
@@ -373,15 +372,14 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
      * @notice Redeem shares for assets
      */
     function redeem(uint256 vaultId, uint256 shares, address receiver, address owner) external whenVaultNotPaused(vaultId) nonReentrant returns (uint256 assets) {
+        VaultStorage storage vs = vaultStorage();
+        
         // Check authorization
         if (msg.sender != owner) {
-            VaultStorage storage vs = vaultStorage();
             uint256 allowed = vs.allowances[vaultId][owner][msg.sender];
             require(allowed >= shares, "VaultFacet: Insufficient allowance");
             vs.allowances[vaultId][owner][msg.sender] -= shares;
         }
-
-        VaultStorage storage vs = vaultStorage();
         Vault storage vault = vs.vaults[vaultId];
         require(vault.active, "VaultFacet: Vault not active");
         require(!vault.isMultiAsset, "VaultFacet: Use multi-asset redeem for ERC-1155 vaults");
@@ -497,7 +495,7 @@ contract VaultFacet is IVaultFacet, IERC1155Receiver {
     /**
      * @notice Get multi-asset balance
      */
-    function getMultiAssetBalance(uint256 vaultId, address user, address token, uint256 tokenId) external view returns (uint256) {
+    function getMultiAssetBalance(uint256 vaultId, address user, address, uint256 tokenId) external view returns (uint256) {
         return vaultStorage().multiAssetBalances[vaultId][user][tokenId];
     }
 
